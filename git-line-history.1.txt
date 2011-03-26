@@ -1,0 +1,89 @@
+= git-line-history(1) =
+
+== NAME ==
+
+git-line-history - Track changes in a line from a file using git
+
+== SYNOPSIS ==
+
+git-line-history file regexp
+
+== DESCRIPTION ==
+
++git-line-history+ helps to find out which commits have modified a line in
+the whole revision history of a single file from a git repository.
+
+This tool was formerly made to retrieve the version changes in a git tree in
+order to create tags.
+
+== ARGUMENTS ==
+
+The 2 mandatory arguments are the file on which the research should be
+performed, and the regexp to be used to track the line change.
+
+
+== USAGE ==
+
+=== Version changes ===
+
+To search for all commits that change the version from a python module, this
+line could be used:
+
+----
+git line-history setup.py version
+----
+
+A possible output with all version changes could be something similar to:
+
+----
+382f92b58bc64e128bb2f066801b3ab6c6dcff6a:    version="1.3d",
+24dbec800e5c59ecc3419a92bf778f16cdd7a45d:    version="1.3c",
+fe46da172abea13c304bb23de671433f65f5da96:    version="1.3b",
+ff8ba7be2aac3a809a0410ffbb59ddf07e930a2f:    version="1.3a",
+501934e10a4b1d71c734c5dc2c224161dcdbe96b:    version="1.2b",
+bf82e0fff633be15c13ae3063daf935b94ec58c5:    version="1.2a",
+2cfb388181e14cae105d9c2c63e21199539d1872:    version="1.1a",
+adf625d464a4a7b06241a1b5685c209296740992:    version="1.0e",
+4050a0b87467797d1aef1887aac6d396b1e6586b:    version="1.0d",
+648343e2de71a37099eeef62f53a4adf077e2703:    version="1.0c",
+696f3a72f936038e85245832f5564d9d40ddff9a:    version="1.0b",
+717178019715c0dcd9b90d53c897f06fa77b42f1:    version="1.0a",
+----
+
+=== Setting up tags ===
+
+
+To tag a repository against change sets from the previous example, the
+following command could be used:
+
+----
+git line-history setup.py version | sed -n \
+  's/^\([^:]\+\):.*"\([^"]\+\)".*/git tag -m "Version \2" \2 \1/p' \
+  | sh
+
+----
+
+== SEE ALSO ==
+
+git(1), grep(1), regex(7).
+
+== HISTORY ==
+
+2011/03/26:
+
+  First release.
+
+== BUGS ==
+
+No time to include bugs, command actions might seldom lead astray user's
+assumption.
+
+== AUTHORS ==
+
++git-line-history+ is written by Sébastien Gross <seb•ɑƬ•chezwam•ɖɵʈ•org>.
+
+== COPYRIGHT ==
+
+Copyright © 2011 Sébastien Gross <seb•ɑƬ•chezwam•ɖɵʈ•org>.
+
+Relased under WTFPL (http://sam.zoy.org/wtfpl/COPYING[]).

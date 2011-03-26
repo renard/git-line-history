@@ -1,0 +1,121 @@
+'\" t
+.\"     Title: git-line-history
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 03/26/2011
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "GIT\-LINE\-HISTORY" "1" "03/26/2011" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+git-line-history \- Track changes in a line from a file using git
+.SH "SYNOPSIS"
+.sp
+git\-line\-history file regexp
+.SH "DESCRIPTION"
+.sp
+git\-line\-history helps to find out which commits have modified a line in the whole revision history of a single file from a git repository\&.
+.sp
+This tool was formerly made to retrieve the version changes in a git tree in order to create tags\&.
+.SH "ARGUMENTS"
+.sp
+The 2 mandatory arguments are the file on which the research should be performed, and the regexp to be used to track the line change\&.
+.SH "USAGE"
+.SS "Version changes"
+.sp
+To search for all commits that change the version from a python module, this line could be used:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git line\-history setup\&.py version
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+A possible output with all version changes could be something similar to:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+382f92b58bc64e128bb2f066801b3ab6c6dcff6a:    version="1\&.3d",
+24dbec800e5c59ecc3419a92bf778f16cdd7a45d:    version="1\&.3c",
+fe46da172abea13c304bb23de671433f65f5da96:    version="1\&.3b",
+ff8ba7be2aac3a809a0410ffbb59ddf07e930a2f:    version="1\&.3a",
+501934e10a4b1d71c734c5dc2c224161dcdbe96b:    version="1\&.2b",
+bf82e0fff633be15c13ae3063daf935b94ec58c5:    version="1\&.2a",
+2cfb388181e14cae105d9c2c63e21199539d1872:    version="1\&.1a",
+adf625d464a4a7b06241a1b5685c209296740992:    version="1\&.0e",
+4050a0b87467797d1aef1887aac6d396b1e6586b:    version="1\&.0d",
+648343e2de71a37099eeef62f53a4adf077e2703:    version="1\&.0c",
+696f3a72f936038e85245832f5564d9d40ddff9a:    version="1\&.0b",
+717178019715c0dcd9b90d53c897f06fa77b42f1:    version="1\&.0a",
+.fi
+.if n \{\
+.RE
+.\}
+.SS "Setting up tags"
+.sp
+To tag a repository against change sets from the previous example, the following command could be used:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git line\-history setup\&.py version | sed \-n \e
+  \*(Aqs/^\e([^:]\e+\e):\&.*"\e([^"]\e+\e)"\&.*/git tag \-m "Version \e2" \e2 \e1/p\*(Aq \e
+  | sh
+.fi
+.if n \{\
+.RE
+.\}
+.SH "SEE ALSO"
+.sp
+git(1), grep(1), regex(7)\&.
+.SH "HISTORY"
+.sp
+2011/03/26:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+First release\&.
+.fi
+.if n \{\
+.RE
+.\}
+.SH "BUGS"
+.sp
+No time to include bugs, command actions might seldom lead astray user\(cqs assumption\&.
+.SH "AUTHORS"
+.sp
+git\-line\-history is written by S\('ebastien Gross <seb\(buɑƬ\(buchezwam\(buɖɵʈ\(buorg>\&.
+.SH "COPYRIGHT"
+.sp
+Copyright \(co 2011 S\('ebastien Gross <seb\(buɑƬ\(buchezwam\(buɖɵʈ\(buorg>\&.
+.sp
+Relased under WTFPL (\m[blue]\fBhttp://sam\&.zoy\&.org/wtfpl/COPYING\fR\m[])\&.

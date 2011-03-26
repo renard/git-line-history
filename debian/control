@@ -1,0 +1,19 @@
+Source: git-line-history
+Section: vcs
+Priority: extra
+Maintainer: Sébastien Gross <seb•ɑƬ•chezwam•ɖɵʈ•org>
+Build-Depends: debhelper (>= 7.0.50)
+Standards-Version: 3.8.0
+Homepage: http://github.com/renard/git-line-history 
+
+Package: git-line-history
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, git | git-core,
+Description: Track changes in a line from a file using git 
+ git-line-history helps to find out which commits have modified a
+ line in the whole revision history of a single file from a git
+ repository.
+ .
+ This tool was formerly made to retrieve the version changes in a
+ git tree in order to create tags.  
+

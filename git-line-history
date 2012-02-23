@@ -49,7 +49,7 @@
 			 (list "rev-parse" "HEAD")))
    with regexp = (format
 		  nil
-		  "^([0-9a-f]{40}|\\^[0-9a-f]{39})\\s+[0-9]+\\)\\s+(.*~a.*)$" 
+		  "[\\^]?(^[0-9a-f]{40}|[0-9a-f]{39})\\s+[0-9]+\\)\\s+(.*~a.*)$" 
 		  (args-regex args))
    while id
    do

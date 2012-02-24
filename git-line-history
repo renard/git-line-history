@@ -1,4 +1,4 @@
-#!/usr/bin/sbcl --script
+#!/usr/bin/sbcl  --script
  
 (require :asdf)
 (require :cl-ppcre)
@@ -52,18 +52,15 @@
 		  "[\\^]?(^[0-9a-f]{40}|[0-9a-f]{39})\\s+[0-9]+\\)\\s+(.*~a.*)$" 
 		  (args-regex args))
    while id
-   do
-     (loop for l in (or
-		     (execv "/usr/bin/git"
-			    (list "blame" "-l" "-s"
-				  (format nil "~a^1" id)
-				  (args-file args)))
-		     (setf id nil))
-	do (progn
-	     (let ((str (multiple-value-bind (replaced matchp)
-			      (cl-ppcre:regex-replace regexp l  "\\1:\\2")
-			  (when matchp replaced))))
-	       (when str
-		   (write-line (format nil "~a" str))
-		   (setf id (car (cl-ppcre:split ":" str))))))))
-
+   do (let ((lines (execv "/usr/bin/git"
+			  (list "blame" "-l" "-s"
+				(format nil "~a^1" id)
+				(args-file args)))))
+	(setf id nil)
+	(loop for l in lines
+	   do (let ((str (multiple-value-bind (replaced matchp)
+			     (cl-ppcre:regex-replace regexp l  "\\1:\\2")
+			   (when matchp replaced))))
+		(when str
+		  (write-line (format nil "~a" str))
+		  (setf id (car (cl-ppcre:split ":" str))))))))

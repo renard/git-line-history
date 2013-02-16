@@ -24,8 +24,8 @@ regexp=$2
 id=$(git rev-parse HEAD)
 
 while test "$id" != ""; do
-    line=$(git blame -l -s ${id}^1 $file 2>/dev/null | sed -n \
-	"s/^\([0-9a-f]\{40\}\)[[:space:]]\+\(.*[[:space:]]\+\)\?[0-9]\+)\(.*$regexp.*\)\$/\1:\3/p")
+    line=$(git blame -l -s ${id}^1 $file 2>/dev/null | perl -ne \
+	"print \"\$1:\$3\n\" if /^([0-9a-f]{40})\s+(.*\s+)?[0-9]+\)(.*$regexp.*)\$/;")
     echo "$line"
     id=$(echo $line | cut -f1 -d':')
 done
